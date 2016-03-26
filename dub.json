@@ -1,0 +1,11 @@
+{
+    "name": "chloride",
+    "description": "D friendly wrapper around libsodium",
+    "authors": ["Thayne McCombs"],
+    "copyright": "Copyright © 2016, Thayne McCombs",
+    "license": "ISC License",
+    "dependencies": {
+        "sodium": "~master"
+    },
+    "targetType": "library"
+}
