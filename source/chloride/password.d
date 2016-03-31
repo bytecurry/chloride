@@ -35,7 +35,7 @@ enum sensitivePwHashConfig = PwHashConfig(
     crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_SENSITIVE,
     crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_SENSITIVE);
 
-void hashPasswordBuffer(ubyte[] out_, const char[] password, in Salt salt, PwHashConfig config) {
+void hashPasswordBuffer(ubyte[] out_, in char[] password, in Salt salt, PwHashConfig config) {
     int result = crypto_pwhash_scryptsalsa208sha256(
         out_.ptr, out_.length,
         password.ptr, password.length,
@@ -46,7 +46,7 @@ void hashPasswordBuffer(ubyte[] out_, const char[] password, in Salt salt, PwHas
 /**
  * Hash a password with a salt. Returns the hash as a `ubyte[]`.
  */
-ubyte[] hashPassword(const char[] password, in Salt salt, PwHashConfig config, size_t length) {
+ubyte[] hashPassword(in char[] password, in Salt salt, PwHashConfig config, size_t length) {
     ubyte[] hash = uninitializedArray!(ubyte[])(length);
     hashPasswordBuffer(hash, password, salt, config);
     return hash;
@@ -69,7 +69,7 @@ string passwordStorageString(string password, PwHashConfig config) {
 /**
  * Verify a password with a hash and salt
  */
-bool verifyPassword(const ubyte[] hash, string password, in Salt salt, PwHashConfig config) {
+bool verifyPassword(in ubyte[] hash, string password, in Salt salt, PwHashConfig config) {
     import core.memory : GC;
 
     auto hashAttempt = uninitializedArray!(ubyte[])(hash.length);
@@ -104,7 +104,6 @@ Salt makeSalt() {
 
 ///
 unittest {
-
     auto salt = makeSalt();
     auto hash = hashPassword("password", salt, interactivePwHashConfig, 32);
     assert(verifyPassword(hash, "password", salt, interactivePwHashConfig));
