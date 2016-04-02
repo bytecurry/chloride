@@ -1,4 +1,4 @@
-module chloride.secret;
+module chloride.secretbox;
 
 import chloride.core;
 import chloride.random : fillRandom;
@@ -95,7 +95,7 @@ bool decryptSecretBoxInPlace(ref ubyte[] buffer,
  * Encrypt `message` using `key` and a newly generated nonce. Return a `SecreBox` with
  * the encrypted ciphertext and the generated nonce.
  */
-SecretBox encrypt(in ubyte[] message, in ubyte[SecretKeyLength] key) {
+SecretBox secretBox(in ubyte[] message, in ubyte[SecretKeyLength] key) {
     SecretBox result;
     result.nonce = makeNonce();
     result.cipher = encryptSecretBox(message, result.nonce, key);
@@ -106,7 +106,7 @@ SecretBox encrypt(in ubyte[] message, in ubyte[SecretKeyLength] key) {
  * Decrypt `box` which contains the ciphertext and the nonce used to generate it.
  * If decryption fails it returns null.
  */
-ubyte[] decrypt(in SecretBox box, in ubyte[SecretKeyLength] key) {
+ubyte[] openSecretBox(in SecretBox box, in ubyte[SecretKeyLength] key) {
     return decryptSecretBox(box.cipher, box.nonce, key);
 }
 
@@ -133,6 +133,6 @@ unittest {
     import std.string : representation;
     immutable ubyte[] message = representation("hello");
     immutable key = makeSecretKey();
-    auto box = encrypt(message, key);
-    assert(decrypt(box, key) == message);
+    auto box = secretBox(message, key);
+    assert(openSecretBox(box, key) == message);
 }

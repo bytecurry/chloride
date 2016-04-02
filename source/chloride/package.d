@@ -4,3 +4,4 @@ import chloride.core; // initializes sodium
 public import chloride.core : SodiumException;
 public import chloride.random;
 public import chloride.password;
+public import chloride.secretbox;
