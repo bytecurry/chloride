@@ -1,7 +1,7 @@
 module chloride.lockbox;
 
 import chloride.core;
-import chloride.random;
+import chloride.random : randomArray;
 
 import std.array : uninitializedArray;
 
@@ -56,20 +56,12 @@ LockBoxKeys makeLockBoxKeys(in LockBoxSeed seed) {
 /**
  * Generate a seed suitable for use with makeLockBoxKeys
  */
-LockBoxSeed makeLockBoxSeed() {
-    LockBoxSeed seed;
-    fillRandom(seed);
-    return seed;
-}
+alias makeLockBoxSeed = randomArray!LockBoxSeed;
 
 /**
  * Generate a nonce suitable for encrypting a lock box.
  */
-Nonce makeNonce() {
-    Nonce nonce = void;
-    fillRandom(nonce);
-    return nonce;
-}
+alias makeNonce = randomArray!Nonce;
 
 /**
  * Struct containing a message encrypted and signed using public key cryptography.

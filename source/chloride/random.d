@@ -17,11 +17,29 @@ ubyte[] randomBytes(int n) {
     return buf;
 }
 
+/**
+ * Create an array of `n` elements filled with random data.
+ * The array can be static or dynamic. If the array is dynamic, the size
+ * must be passed as a runtime argument.
+ */
+U randomArray(U: T[n], T, int n)() if (isScalarType!T) {
+    U data = void;
+    fillRandom(data);
+    return data;
+}
+
+///
+U randomArray(U: T[], T)(int n) if (isScalarType!T) {
+    U data = uninitializedArray!(U)(n);
+    fillRandom(data);
+    return data;
+}
+
 
 /**
  * Fill `buf` with cryptographic random data.
  */
-void fillRandom(const void[] buf) {
+void fillRandom(void[] buf) {
     randombytes_buf(buf.ptr, buf.length);
 }
 

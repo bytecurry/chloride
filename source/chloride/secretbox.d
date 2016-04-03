@@ -1,7 +1,7 @@
 module chloride.secretbox;
 
 import chloride.core;
-import chloride.random : fillRandom;
+import chloride.random : randomArray;
 
 import std.array;
 
@@ -124,17 +124,9 @@ ubyte[] openSecretBox(in SecretBox box, in SecretKey key) {
 /**
  * Generate a nonce suitable for secret key encryption.
  */
-Nonce makeNonce() {
-    Nonce nonce = void;
-    fillRandom(nonce);
-    return nonce;
-}
+alias makeNonce = randomArray!Nonce;
 
 /**
  * Generate a key suitable for secret key encryption.
  */
-SecretKey makeSecretKey() {
-    SecretKey key = void;
-    fillRandom(key);
-    return key;
-}
+alias makeSecretKey = randomArray!SecretKey;

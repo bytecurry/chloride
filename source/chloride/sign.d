@@ -1,6 +1,7 @@
 module chloride.sign;
 
 import chloride.core;
+import chloride.random : randomArray;
 
 import std.array : uninitializedArray;
 
@@ -57,12 +58,7 @@ SigningKeys makeSigningKeys(in SigningSeed seed) {
 /**
  * Generate a seed that can be used to generate key pairs with `makeSigningKeys`.
  */
-SigningSeed makeSigningSeed() {
-    import chloride.random : fillRandom;
-    SigningSeed seed;
-    fillRandom(seed);
-    return seed;
-}
+alias makeSigningSeed = randomArray!SigningSeed;
 
 /**
  * Sign a message using a private key by prepending a signature to the message.

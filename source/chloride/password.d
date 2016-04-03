@@ -1,7 +1,7 @@
 module chloride.password;
 
 import chloride.core;
-import chloride.random;
+import chloride.random : randomArray;
 
 import std.array : uninitializedArray;
 import std.algorithm.mutation : copy, fill;
@@ -96,11 +96,7 @@ bool verifyPassword(string password, string storageString) {
 /**
  * Generate a salt suitable for hashing passwords.
  */
-Salt makeSalt() {
-    Salt salt = void;
-    fillRandom(salt);
-    return salt;
-}
+alias makeSalt = randomArray!Salt;
 
 ///
 unittest {

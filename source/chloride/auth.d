@@ -1,6 +1,7 @@
 module chloride.auth;
 
 import chloride.core;
+import chloride.random : randomArray;
 
 import sodium.crypto_auth;
 
@@ -19,12 +20,7 @@ alias Mac = ubyte[crypto_auth_BYTES];
 /**
  * Generate a key for use with authentication.
  */
-AuthKey makeAuthKey() {
-    import chloride.random : fillRandom;
-    AuthKey key = void;
-    fillRandom(key);
-    return key;
-}
+alias makeAuthKey = randomArray!AuthKey;
 
 /**
  * Create an authentication Mac for a message, signed with `key`.
