@@ -3,5 +3,4 @@ d: dmd
 sudo: required
 dist: trusty
 before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get install -y libsodium
+  - sudo apt-get install -qq -yy libsodium-dev
