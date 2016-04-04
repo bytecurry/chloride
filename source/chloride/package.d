@@ -7,5 +7,6 @@ public import chloride.password;
 public import chloride.auth;
 public import chloride.sign;
 public import chloride.secretbox : secretBox, openSecretBox, SecretBox, makeSecretKey, SecretKey;
-public import chloride.lockbox : lockBox, openLockBox, LockBox, makeLockBoxKeys,
-    PublicKey, PrivateKey, makeLockBoxSeed, LockBoxSeed;
+public import chloride.lockbox : lockBox, openLockBox, KeyPair, makeKeyPair,
+    PublicKey, PrivateKey, makeLockBoxSeed, LockBoxSeed,
+    sealBox, openSealedBox;

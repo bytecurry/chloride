@@ -11,10 +11,19 @@ import sodium.crypto_box;
 unittest {
     import std.string : representation;
     immutable ubyte[] message = representation("hello");
-    auto alice = makeLockBoxKeys();
-    auto bob = makeLockBoxKeys();
+    auto alice = makeKeyPair();
+    auto bob = makeKeyPair();
     auto box = lockBox(message, bob.publicKey, alice.privateKey);
     assert(openLockBox(box, alice.publicKey, bob.privateKey) == message);
+}
+
+///
+unittest {
+    import std.string : representation;
+    immutable ubyte[] message = representation("hello");
+    auto keys = makeKeyPair();
+    auto box = sealBox(message, keys.publicKey);
+    assert(openSealedBox(box, keys) == message);
 }
 
 alias PublicKey = ubyte[crypto_box_PUBLICKEYBYTES];
@@ -26,7 +35,7 @@ alias LockBoxMacLength = crypto_box_MACBYTES;
 /**
  * Struct containing a key pair for public key encryption
  */
-struct LockBoxKeys {
+struct KeyPair {
     PublicKey publicKey;
     PrivateKey privateKey;
 }
@@ -34,8 +43,8 @@ struct LockBoxKeys {
 /**
  * Generate a new random key pair.
  */
-LockBoxKeys makeLockBoxKeys() {
-    LockBoxKeys pair;
+KeyPair makeKeyPair() {
+    KeyPair pair;
     auto result = crypto_box_keypair(pair.publicKey.ptr, pair.privateKey.ptr);
     enforceSodium(result == 0);
     return pair;
@@ -44,8 +53,8 @@ LockBoxKeys makeLockBoxKeys() {
 /**
  * Generate a key pair from a seed.
  */
-LockBoxKeys makeLockBoxKeys(in LockBoxSeed seed) {
-    LockBoxKeys pair;
+KeyPair makeKeyPair(in LockBoxSeed seed) {
+    KeyPair pair;
     auto result = crypto_box_seed_keypair(pair.publicKey.ptr,
                                           pair.privateKey.ptr,
                                           seed.ptr);
@@ -54,7 +63,7 @@ LockBoxKeys makeLockBoxKeys(in LockBoxSeed seed) {
 }
 
 /**
- * Generate a seed suitable for use with makeLockBoxKeys
+ * Generate a seed suitable for use with makeKeyPair
  */
 alias makeLockBoxSeed = randomArray!LockBoxSeed;
 
@@ -122,4 +131,32 @@ LockBox lockBox(in ubyte[] message, in PublicKey pk, in PrivateKey sk) {
  */
 ubyte[] openLockBox(in LockBox box, in PublicKey pk, in PrivateKey sk) {
     return decryptLockBox(box.ciphertext, box.nonce, pk, sk);
+}
+
+/**
+ * Anonymously encrypt a message using the recipients public key. A new key pair is generated for
+ * each invocation, so a nonce isn't needed.
+ */
+ubyte[] sealBox(in ubyte[] message, in PublicKey pk) {
+    auto cipher = uninitializedArray!(ubyte[])(message.length + crypto_box_SEALBYTES);
+    auto result = crypto_box_seal(cipher.ptr, message.ptr, message.length, pk.ptr);
+    enforceSodium(result == 0);
+    return cipher;
+}
+
+/**
+ * Decrypt a sealed box using the recipient's key pair.
+ * If decryption fails, return null.
+ */
+ubyte[] openSealedBox(in ubyte[] cipher, in KeyPair keys) in {
+    assert(cipher.length > crypto_box_SEALBYTES);
+} body {
+    auto message = uninitializedArray!(ubyte[])(cipher.length - crypto_box_SEALBYTES);
+    auto result = crypto_box_seal_open(message.ptr, cipher.ptr, cipher.length,
+                                       keys.publicKey.ptr, keys.privateKey.ptr);
+    if (result == 0) {
+        return message;
+    } else {
+        return null;
+    }
 }
