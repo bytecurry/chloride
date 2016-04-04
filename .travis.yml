@@ -7,7 +7,5 @@ env:
 before_install:
   - curl https://download.libsodium.org/libsodium/releases/libsodium-$VERSION.tar.gz | tar -C ~ -xzf -
   - pushd ~/libsodium-$VERSION
-  - ./configure
-  - make
-  - sudo make install
+  - ./configure --prefix=/usr && make && sudo make install
   - popd
