@@ -84,10 +84,9 @@ bool verifyPassword(in ubyte[] hash, string password, in Salt salt, PwHashConfig
  * Verify a password against a storage string obtained from `passwordStorageString`
  */
 bool verifyPassword(string password, string storageString) {
-    char[PwStringBytes] data = void;
+    char[PwStringBytes] data = '\0';
     assert(storageString.length < data.length);
-    auto tail = storageString.copy(data[]);
-    tail[0] = '\0';
+    storageString.copy(data[]);
     int result = crypto_pwhash_scryptsalsa208sha256_str_verify(data,
                                                               password.ptr, password.length);
     return result == 0;
