@@ -1,6 +1,6 @@
 {
 	"fileVersion": 1,
 	"versions": {
-		"sodium": "~master"
+		"sodium": "0.0.5"
 	}
 }
