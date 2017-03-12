@@ -242,3 +242,61 @@ unittest {
     assert(verifyPassword("password", hash));
     assert(!verifyPassword("bad pass", hash));
 }
+
+
+/**
+ * An object that can hash and verify passwords.
+ */
+interface PwHasher {
+    /// Hash a password
+    string hashPassword(string password) const;
+
+    /// Verify a password matches a hash made with `hashPassword`
+    bool verifyPassword(string password, string hash) const;
+}
+
+/**
+ * A `PwHasher` that uses the argon2 algorithm
+ */
+class Argon2Hasher: PwHasher {
+    private PwHashConfig config;
+
+    /**
+     * Params:
+     *   config = Configuration for hashing
+     */
+    this(PwHashConfig config) {
+        this.config = config;
+    }
+
+    string hashPassword(string password) const {
+        return Argon2.hashPassword(password, config);
+    }
+
+    bool verifyPassword(string password, string hash) const {
+        return Argon2.verifyPassword(password, hash);
+    }
+}
+
+/**
+ * A `PwHasher` that uses the scrypt algorithm
+ */
+class ScryptHasher: PwHasher {
+    private PwHashConfig config;
+
+    /**
+     * Params:
+     *   config = Configuration for hashing
+     */
+    this(PwHashConfig config) {
+        this.config = config;
+    }
+
+    string hashPassword(string password) const {
+        return Scrypt.hashPassword(password, config);
+    }
+
+    bool verifyPassword(string password, string hash) const {
+        return Scrypt.verifyPassword(password, hash);
+    }
+}
