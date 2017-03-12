@@ -3,7 +3,7 @@ d: dmd
 sudo: required
 dist: trusty
 env:
-  - VERSION=1.0.8
+  - VERSION=1.0.12
 before_install:
   - curl https://download.libsodium.org/libsodium/releases/libsodium-$VERSION.tar.gz | tar -C ~ -xzf -
   - pushd ~/libsodium-$VERSION
