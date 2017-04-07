@@ -5,7 +5,7 @@
     "copyright": "Copyright © 2016, Thayne McCombs",
     "license": "ISC License",
     "dependencies": {
-        "sodium": "~>0.0.8"
+        "sodium": "~>0.1.1"
     },
     "targetType": "library"
 }
