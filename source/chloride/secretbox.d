@@ -5,7 +5,7 @@ import chloride.random : randomArray;
 
 import std.array;
 
-import sodium.crypto_secretbox;
+import deimos.sodium.crypto_secretbox;
 
 ///
 unittest {

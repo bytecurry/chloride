@@ -8,8 +8,8 @@ import std.algorithm.mutation : copy, fill;
 import std.exception: assumeUnique;
 import std.string : fromStringz, toStringz;
 
-import sodium.crypto_pwhash_scryptsalsa208sha256;
-import sodium.crypto_pwhash;
+import deimos.sodium.crypto_pwhash_scryptsalsa208sha256;
+import deimos.sodium.crypto_pwhash;
 
 /**
  * Algorithm to use for the password hashing.
@@ -214,7 +214,7 @@ bool verifyPassword(Algorithm alg, string password, string hash) {
 bool verifyPassword(string password, string hash) {
     import std.algorithm.searching;
     import std.conv;
-    import sodium.crypto_pwhash_argon2i;
+    import deimos.sodium.crypto_pwhash_argon2i;
 
     const ARGON_PREFIX = to!string(crypto_pwhash_argon2i_STRPREFIX);
     const SCRYPT_PREFIX = to!string(crypto_pwhash_scryptsalsa208sha256_STRPREFIX);

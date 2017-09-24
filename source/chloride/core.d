@@ -4,7 +4,7 @@ import std.array : uninitializedArray;
 import std.string : fromStringz;
 import std.exception : ErrnoException;
 
-import sodium.core;
+import deimos.sodium.core;
 
 static this() {
     if (sodium_init() == -1) {

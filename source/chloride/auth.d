@@ -3,7 +3,7 @@ module chloride.auth;
 import chloride.core;
 import chloride.random : randomArray;
 
-import sodium.crypto_auth;
+import deimos.sodium.crypto_auth;
 
 ///
 unittest {

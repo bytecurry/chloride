@@ -5,7 +5,7 @@ import chloride.core;
 import std.array : uninitializedArray;
 import std.traits;
 
-import sodium.randombytes;
+import deimos.sodium.randombytes;
 
 
 /**
